@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div class="minmin">
         <home></home>
         <div class="Blog-ar">
             <div class="form-a">
-                <el-form ref="form" :model="form" label-width="80px">
+                <el-form ref="form" :model="form" label-width="80px" class="wiwi">
                     <el-form-item label="留言">
                         <el-input type="textarea" v-model="form.desc"></el-input>
                     </el-form-item>
@@ -35,12 +35,11 @@ export default {
         onSubmit() {
           var userid =JSON.parse(this.$Cookies.get('cookie'))['user_id'];
           console.log('submit!');
-          this.$ajax.post("http://localhost:3030/said",qs.stringify({
+          this.$ajax.post(this.host+"/said",qs.stringify({
               content:this.form.desc,
               user_id:userid
           }))
           .then(res =>{
-              // console.log(res['data']['code']);
                   if (res.data.code==1) {
                           console.log("新增成功"); 
                           this.$message({
@@ -68,6 +67,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+    .wiwi{
+        min-width: 350px
+    }
+    .minmin{
+        min-width: 1100px;
+    }
     .form-a{
         position: absolute;
         width: 30%;

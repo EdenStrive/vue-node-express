@@ -27,6 +27,8 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                <!-- <quill-editor ref="myTextEditor" :options="editorOption">
+                </quill-editor> -->
         </div>
     </div>
 </template>

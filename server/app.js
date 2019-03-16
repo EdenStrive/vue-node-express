@@ -28,12 +28,12 @@ app.all('*', function(req, res, next) {
     next();
 });
 app.get('/nav',function(req,res){
-    console.log("nav连接已经打开");
+    // console.log("nav连接已经打开");
     connection.query('SELECT * FROM blog_category where status=1', function (error, results, fields) {
         if (error) throw error;
         // console.log('the solution is: ',results);
         res.json(results);
-        console.log("回调nav数据库信息")
+        // console.log("回调nav数据库信息",results)
       });
     
 });
@@ -51,8 +51,25 @@ app.post('/login',function(req,res){
         }
       });
 });
+app.get('/detail',function(req,res){
+
+    console.log(req.query.id)
+
+    connection.query('SELECT title,content,create_time FROM blog_article_detail where id='+req.query.id, function (error, results, fields) {
+        if (error) throw error;
+        // console.log(results)
+        res.json(results);
+    });
+
+});
 app.get('/category',function(req,res){
-    connection.query('SELECT id,title,content,create_time FROM blog_article_detail where status=1', function (error, results, fields) {
+    connection.query("SELECT id,title,content,create_time FROM blog_article_detail where status=1 order by create_time desc limit "+req.query.start+","+req.query.end, function (error, results, fields) {
+        if (error) throw error;
+        res.json(results);
+    });
+});
+app.get('/total',function(req,res){
+    connection.query('select count(*) from blog_article_detail', function (error, results, fields) {
         if (error) throw error;
         res.json(results);
     });
@@ -62,6 +79,18 @@ app.get('/saidto',function(req,res){
         if (error) throw error;
         res.json(results);
     });
+});
+app.post('/fabu',function(req,res){
+    console.log("发布文章");
+    var post = {title:req.body.title,content:req.body.content,create_time:req.body.create_time}
+    connection.query('INSERT INTO blog_article_detail SET ?',post,function(error,results,fields){
+        if (error) {
+            console.log(error);
+            res.json({code:0,message:"出现错误"+error})
+        } else {
+            res.json({code:1})
+        }
+    })
 });
 app.post('/inser',function(req,res){
     console.log("新增用户");

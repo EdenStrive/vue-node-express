@@ -20,7 +20,7 @@
                     <div class="clear"> </div>
                 </div>
                 <div class="log-bwn">
-                    <input type="submit" @click = 'login'>
+                    <input type="submit" @click.prevent='login()'>
                 </div>
             </form>
             </div>
@@ -47,28 +47,26 @@ export default {
     methods:{
         login(){
            if (this.username!=''&&this.password!='') {
-                this.$ajax.post("http://localhost:3030/login",qs.stringify({
+                this.$ajax.post(this.host+"/login",qs.stringify({
                     username: this.username,
                     password: this.password
                 }))
                .then(res =>{
                    if (res.data.code==1) {
-                        console.log("验证成功"); 
+                        // console.log("验证成功"); 
                         this.$message({
                             showClose:true,
                             message:'登陆成功',
                             type:'success',
                             duration:2000,
-                            customClass:'message-type'
                         });
-                        console.log(res.data.rows[0]);
-                        this.$store.state.login = res.data.rows[0];
+                        // console.log(res.data.rows[0]);
                         this.$Cookies.set('cookie',res.data.rows[0], { expires: 6 });
                         setTimeout(() => {
                             this.$router.push("/xwp")
                         },2000);
                    }else{
-                        console.log("验证失败"); 
+                        // console.log("验证失败"); 
                         this.$message.error("账号或者密码错误")
                    }
                })

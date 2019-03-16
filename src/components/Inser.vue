@@ -45,7 +45,7 @@ export default {
     methods: {
       onSubmit() {
         console.log('submit!');
-        this.$ajax.post("http://localhost:3030/inser",qs.stringify({
+        this.$ajax.post(this.host+"/inser",qs.stringify({
             username:this.form.name,
             password:this.form.password,
             role:this.form.resource

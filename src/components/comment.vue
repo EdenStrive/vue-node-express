@@ -8,18 +8,18 @@
          <span class="icon-bar"></span>
          <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand"><router-link to="/xwp">￥邢文鹏</router-link></a>
+      <a class="navbar-brand"><router-link to="/xwp"><strong><i>Eden Strive</i></strong></router-link></a>
    </div>
    <div class="collapse navbar-collapse nag-flex" id="example-navbar-collapse">
       <ul class="nav navbar-nav nav-p">
-         <li><a href="#"><router-link to="/article">{{Onetitle}}</router-link></a></li>
-         <li class="dropdown">
+         <li><a href="#"><router-link to="/article"><strong>{{Onetitle}}</strong></router-link></a></li>
+         <!-- <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{Twotitle}}<b class="caret"></b>
             </a>
             <ul class="dropdown-menu nav-w">
                <li v-for="(arr,index) in Childs" :key="index"><a href="#">{{arr}}</a></li>
             </ul>
-          </li>
+          </li> -->
       </ul>
       <ul class="nav navbar-nav nav-rr navbar-right" v-if="wel">
           <li><a>欢迎:{{wel}}</a></li>
@@ -63,7 +63,7 @@ export default {
           }
           this.roles = jsObject['role'];
       }
-      this.$ajax.get("http://localhost:3030/nav")
+      this.$ajax.get(this.host + "/nav")
       .then(res =>{
         this.$store.state.nav=res["data"];
         // console.log(this.$store.state.nav);//）共同点： 能够修改state里的变量，并且是响应式的（能触发视图更新）2）不同点：若将vue创建 store 的时候传入 strict: true, 开启严格模式，那么任何修改state的操作，只要不经过mutation的函数，
@@ -83,8 +83,8 @@ export default {
         this.Onetitle=nav[0];
         this.Twotitle= nav[1];
         this.Childs = navChild;
-        console.log(this.Childs);
-        console.log(nav);
+        // console.log(this.Childs);
+        // console.log(nav);
       })
       .catch(error => {
         console.log(error);
@@ -127,6 +127,7 @@ export default {
   }
   .kongbai{
     margin-bottom: 0;
+    background-color: rgb(255, 255, 255)
   }
   .button-r{
     margin-right: 5px;

@@ -3,31 +3,24 @@
         <comment></comment>
         <div id="wrapper" v-loading="uploadLoading">
 					<div id="main">
-							<article v-for="(arr,index) in categoryA" :key="index" class="post">
+							<article class="post">
 								<header>
 									<div class="title">
-										<h2><a @click="details(arr.id)" class="dianji">{{arr.title}}</a></h2>
-										<p>Day Day Up : Good Good Study</p>
+										<h2><a href="#">{{title}}</a></h2>
+										<p class="smalll">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Day Day Up : Good Good Study</p>
 									</div>
 									<div class="meta">
-										<time class="published">{{arr.create_time}}</time>
-										<span class="name author">Eden Strive</span>
+										<time class="published">{{create_time}}</time>
+										<span class="name author">Eden</span>
 									</div>
 								</header>
-								<p class="neirong" @click="details(arr.id)" v-html="arr.content">{{arr.content}}</p>
+								<p class="neirong" v-html="content">{{content}}</p>
 								<footer>
 									<ul class="actions">
 										<li><a href="#" class="button big">Like It</a></li>
 									</ul>
 								</footer>
 							</article>
-							<el-pagination
-                                @current-change="handleCurrentChange"
-                                :current-page.sync="currentPage3"
-                                :page-size="1"
-                                layout="prev, pager, next, jumper"
-                                :total="total">
-                                </el-pagination>
 					</div>
 		</div>
     </div>
@@ -35,74 +28,39 @@
 <script>
 import comment from './comment'
 export default {
-    name: 'article',
+    name: 'details',
     data() {
         return {
-			currentPage3: 1,
-      		total: 1,
-			categoryA:[],
+            title:'',
+            content:'',
+			create_time:'',
 			uploadLoading:false
-            }
+        }
         },
         components:{
               comment
           },
         created(){
-				this.$ajax.get(this.host+"/total")
-				.then(res=>{
-					this.uploadLoading = true					
-					let xx = res.data[0]["count(*)"]
-					this.total = Math.ceil(xx/5)
-					this.$ajax.get(this.host+"/category",{params:{start:0,end:5}})
-						.then(res =>{
-							var j =0;
-							this.categoryA = res['data'];
-							this.uploadLoading = false
-						})
-						.catch(error =>{
-							console.log(error);
-						})
-				})
-				.catch(error =>{
-						console.log(error);
-				})
+			// console.log(this.$route.params.id)
+			this.uploadLoading = true
+            this.$ajax.get(this.host+"/detail",{params:{id:this.$route.params.id}})
+            .then((x)=>{
+                // console.log(x.data[0].content)
+                this.title = x.data[0].title
+                this.content = x.data[0].content
+				this.create_time = x.data[0].create_time
+				this.uploadLoading = false
+				document.documentElement.scrollTop = document.body.scrollTop = 0
+            })
         },
         methods: {
-			details(x){
-				this.$router.push({path:`/details/${x}`})
-			},
-			handleCurrentChange (val) {
-					var start = 5*(val-1)
-					var end = 5
-					this.uploadLoading = true					
-					this.$ajax.get(this.host+"/category",{params:{start:start,end:end}})
-						.then(res =>{
-							var j =0;
-							this.categoryA = res['data'];
-							this.uploadLoading = false
-							document.documentElement.scrollTop = document.body.scrollTop = 0
-						})
-						.catch(error =>{
-							console.log(error);
-						})
-			}
         }
 }
 </script>
 <style scoped>
-	.dianji{
-		cursor: pointer;
-	}
-	.neirong{
-		-webkit-line-clamp: 5;
-		min-height: 100px;
-		max-height: 300px;
-		overflow: hidden; /*自动隐藏文字*/
-		text-overflow: ellipsis;/*文字隐藏后添加省略号*/
-		-webkit-box-orient: vertical; 
-    	word-break: break-all; 
-		cursor: pointer;
-	}
+    .smalll{
+        font-size: 10px
+    }
 	.name{
 		color: rgb(85, 85, 250);
 	}
@@ -113,7 +71,9 @@ export default {
 		margin-top: -70px
 	}
     .article-b{
-        background-image: url("../../static/img/20.jpg")
+        background-image: url("../../static/img/20.jpg");
+        min-height: 100vh;
+		min-width: 950px;
     }
 	#wrapper {
 		display: -moz-flex;
@@ -149,7 +109,7 @@ export default {
 		border: solid 1.5px rgba(107, 69, 69, 0.3);
 		margin: 0 0 3em 0;
 		position: relative;
-		min-height: 50vh;
+		min-height: 70vh;
     }
     .post > header .meta {
 	    padding: 3.75em 3em 1.75em 3em ;

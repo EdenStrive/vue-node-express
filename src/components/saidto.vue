@@ -9,7 +9,7 @@
 								<h2><a href="#">用户：{{arr.user_id}}</a></h2>
 							</div>
 							<div class="meta">
-								留言内容：<time class="published" datetime="2015-11-01">{{arr.content}}</time>
+								<time class="published">{{arr.content}}</time>
 							</div>
 						</header>
 					</article>
@@ -30,7 +30,7 @@ export default {
               home
           },
         created(){
-            this.$ajax.get("http://localhost:3030/saidto")
+            this.$ajax.get(this.host+"/saidto")
                 .then(res =>{
                   this.categoryA=res['data']
                 })
@@ -43,8 +43,18 @@ export default {
 }
 </script>
 <style scoped>
+	.meta{
+		margin-top: -50px
+	}
+	.title{
+		margin-top: -50px;
+	}
+	.published{
+		font-size: 30px
+	}
     .article-b{
-        background-image: url("../../static/img/20.jpg")
+        background-image: url("../../static/img/20.jpg");
+		min-width: 1100px;
     }
 	#wrapper {
 		display: -moz-flex;

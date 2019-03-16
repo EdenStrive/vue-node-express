@@ -37,7 +37,7 @@ export default {
       }
     },
     created(){
-        this.$ajax.get("http://localhost:3030/users")
+        this.$ajax.get(this.host+"/users")
         .then(res =>{
             console.log(res['data']);
             this.tableData = res['data'];

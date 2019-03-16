@@ -20,7 +20,7 @@
                     <div class="clear"> </div>
                 </div>
                 <div class="log-bwn">
-                    <input type="submit" @click = 'login'>
+                    <input type="submit" @click.prevent = 'login'>
                 </div>
             </form>
             </div>
@@ -47,7 +47,7 @@ export default {
     methods:{
         login(){
            if (this.username!=''&&this.password!='') {
-                this.$ajax.post("http://localhost:3030/sign",qs.stringify({
+                this.$ajax.post(this.host+"/sign",qs.stringify({
                     username: this.username,
                     password: this.password
                 }))

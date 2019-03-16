@@ -1,6 +1,6 @@
 <template>
 <div>
-	<nav class="navbar-default">
+	<nav class="navbar-default baise">
 	<div class="nav-logo">
 		<a href="###"><img src="img/logo.png" alt=""></a>
 	</div>
@@ -9,20 +9,19 @@
 		<span></span>
 		<span></span>
 	</div>
-	<li><a class="navbar-left navbar-brand navbar-header admin-nav">￥邢文鹏</a></li>
-
+  <a class="navbar-brand juzhongba"><router-link to="/xwp"><strong><i>Eden Strive</i></strong></router-link></a>
 	<ul class="nav-list" v-if="role==='100'">
 		<li>
 			<a class="active">文章<div class="carect"></div></a>
 			<ul class="menu">
 				<li><a><router-link to="/admin">查看文章</router-link></a></li>
-				<li><a><router-link to="/admin">发布文章</router-link></a></li>
+				<li><a><router-link to="/Release">发布文章</router-link></a></li>
 			</ul>
 		</li>
     <li><a><router-link to="/said">留言</router-link></a></li>
 		<li><a><router-link to="/saidto">查看留言</router-link></a></li>
     <li><a><router-link to="/Inser">添加用户</router-link></a></li>
-		<li><a>注销</a></li>
+		<li><a v-on:click="logininfe">注销</a></li>
 		<li><a><router-link to="/xwp">返回主页</router-link></a></li>
 	</ul>
 
@@ -36,14 +35,14 @@
 		</li>
     <li><a><router-link to="/said">留言</router-link></a></li>
 		<li><a><router-link to="/saidto">查看留言</router-link></a></li>
-		<li><a>注销</a></li>
+		<li><a v-on:click="logininfe">注销</a></li>
 		<li><a><router-link to="/xwp">返回主页</router-link></a></li>
 	</ul>
 
   <ul class="nav-list" v-else-if="role==='游客'">
     <li><a><router-link to="/said">留言</router-link></a></li>
 		<li><a><router-link to="/saidto">查看留言</router-link></a></li>
-		<li><a>注销</a></li>
+		<li><a v-on:click="logininfe">注销</a></li>
 		<li><a><router-link to="/xwp">返回主页</router-link></a></li>
 	</ul>
 
@@ -52,6 +51,8 @@
 </template>
 
 <script>
+import {delcookie} from '@/main'
+
 export default {
   name: 'home',
   data(){
@@ -73,6 +74,33 @@ export default {
       this.role = cookie['role'];
       console.log(this.role);
   },
+  methods:{
+    logininfe:function(){
+      console.log('退出登录');
+      delcookie();
+      if (delcookie()) {
+      this.$message({
+        showClose:true,
+        message:'退出失败，登录时效已过',
+        type:'error',
+        duration:2000,
+        customClass:'message-type'
+      })
+      } else {
+      this.$message({
+        showClose:true,
+        message:'退出成功',
+        type:'success',
+        duration:2000,
+        customClass:'message-type'
+      })
+      this.wel = null;
+      setTimeout(()=>{
+        this.$router.push("/xwp")
+      },1000)
+      }
+    }
+  },
   mounted(){
 	  	$(document).click(function(){
       $('.nav-list').removeClass('open')
@@ -93,10 +121,16 @@ export default {
   padding: 0;
   -webkit-font-smoothing: antialiased;
 }
-
+a{
+  cursor: pointer;
+}
 body, html {
   height: 100%;
   overflow: hidden;
+}
+.juzhongba{
+  height: 100%;
+  line-height: 200%;
 }
 .admin-nav{
   line-height: 35px;
@@ -282,6 +316,9 @@ nav .nav-menu {
 nav .open {
   left: 0%;
   overflow: auto;
+}
+.baise{
+  background-color: rgb(255, 255, 255)
 }
 
 /*# sourceMappingURL=zd-1.0.css.map */
